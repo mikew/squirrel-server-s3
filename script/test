@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 set -e
 
 exec ./node_modules/.bin/mocha \
-    --watch \
+    --colors \
     --recursive \
     --reporter spec \
     --full-trace \
