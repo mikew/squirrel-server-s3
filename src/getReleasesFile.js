@@ -1,5 +1,6 @@
 import config from './config'
 import { s3Instance } from './aws'
+import transformReleasesFile from './transformReleasesFile'
 
 export default function getReleasesFile () {
   const params = {
@@ -15,7 +16,7 @@ export default function getReleasesFile () {
         return
       }
 
-      resolve(new Buffer(data.Body).toString())
+      resolve(transformReleasesFile(new Buffer(data.Body).toString()))
     })
   })
 }
