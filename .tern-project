@@ -1,0 +1,17 @@
+{
+  "libs": [
+    "browser",
+    "jquery",
+    "ecma5",
+    "ecma6"
+  ],
+  "loadEagerly": [
+  ],
+  "plugins": {
+    "complete_strings": {},
+    "doc_comment": {},
+    "modules": {},
+    "es_modules": {},
+    "node": {}
+  }
+}

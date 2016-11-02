@@ -1,0 +1,28 @@
+{
+  "name": "electron-release-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "Mike Wyatt <wyatt.mike@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.6.13",
+    "express": "^4.14.0",
+    "morgan": "^1.7.0",
+    "semver": "^5.3.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-es2015-node6": "^0.3.0",
+    "babel-register": "^6.18.0",
+    "eslint": "^3.9.1",
+    "eslint-config-sst": "^1.0.2",
+    "mocha": "^3.1.2",
+    "simple-mock": "^0.7.1",
+    "supertest": "^2.0.1"
+  }
+}

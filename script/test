@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -e
+
+exec ./node_modules/.bin/mocha \
+    --watch \
+    --recursive \
+    --reporter spec \
+    --full-trace \
+    ./spec/helpers/setup.js \
+    spec/

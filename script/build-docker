@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+
+./script/lint || true
+./script/compile
+#./script/test
+docker build --tag squirrel-server-s3 .
