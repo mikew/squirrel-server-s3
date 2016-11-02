@@ -1,7 +1,14 @@
 #!/usr/bin/env sh
 set -e
 
+WATCH=""
+
+if [ -n "$1" ]; then
+  WATCH="--watch"
+fi
+
 exec ./node_modules/.bin/mocha \
+    $WATCH \
     --colors \
     --recursive \
     --reporter spec \
