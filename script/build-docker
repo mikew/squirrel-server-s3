@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
-./script/lint || true
-./script/compile
 #./script/test
-docker build --tag squirrel-server-s3 .
+
+docker build --tag squirrel-server-s3 --file Dockerfile.build .
+docker build --tag squirrel-server-s3-test --file Dockerfile.test .
+
+docker run --rm --volume "$PWD":/app squirrel-server-s3-test ./script/lint
+docker run --rm --volume "$PWD":/app squirrel-server-s3-test ./script/compile
+docker run --rm --volume "$PWD":/app squirrel-server-s3-test ./script/test
