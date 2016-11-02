@@ -18,7 +18,6 @@ export default function getVersions () {
       const versions = []
 
       data.Contents.forEach(obj => {
-        //console.log(obj)
         const version = obj.Key.split('/')[0]
 
         if (!semver.valid(version)) {
@@ -36,5 +35,3 @@ export default function getVersions () {
     })
   })
 }
-
-//getVersions().then(console.log)
