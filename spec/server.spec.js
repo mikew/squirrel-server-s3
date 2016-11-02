@@ -22,7 +22,7 @@ describe('/download', () => {
         .expect(r => {
           assert.strictEqual(
             r.header.location,
-            `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-v1.0.0-darwin_x64.zip`
+            `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-v1.0.0-darwin_x64.dmg`
           )
         })
         .end(done)
@@ -36,7 +36,7 @@ describe('/download', () => {
         .expect(r => {
           assert.strictEqual(
             r.header.location,
-            `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-v1.0.0-darwin_x64.zip`
+            `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-v1.0.0-darwin_x64.dmg`
           )
         })
         .end(done)

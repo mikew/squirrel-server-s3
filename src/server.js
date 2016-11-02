@@ -2,29 +2,34 @@ import express from 'express'
 import morgan from 'morgan'
 import semver from 'semver'
 
-import getVersions from './getVersions.js'
 import getUrlForVersion from './getUrlForVersion'
 import getReleasesFile from './getReleasesFile'
+import getVersions from './getVersions.js'
 
 export const app = express()
+const PORT = process.env.PORT || 3000
 
 if (typeof describe === 'undefined') {
   app.use(morgan('combined'))
 }
 
+function handleError (res) {
+  return _ => {
+    res.status(500)
+    res.end()
+  }
+}
+
 app.get('/download/:platform/:version', (req, res) => {
-  res.redirect(getUrlForVersion(req.params.version, req.params.platform))
+  res.redirect(getUrlForVersion(req.params.version, req.params.platform, { isInstaller: true }))
 })
 
 app.get('/download/:platform', (req, res) => {
   getVersions()
     .then(versions => {
-      res.redirect(getUrlForVersion(versions[0], req.params.platform))
+      res.redirect(getUrlForVersion(versions[0], req.params.platform, { isInstaller: true }))
     })
-    .catch(_ => {
-      res.status(500)
-      res.end()
-    })
+    .catch(handleError(res))
 })
 
 app.get('/RELEASES', (req, res) => {
@@ -42,7 +47,7 @@ app.get('/update/:platform/:version', (req, res) => {
 
       if (semver.lt(req.params.version, latestVersion)) {
         res.json({
-          url: getUrlForVersion(latestVersion, req.params.platform),
+          url: getUrlForVersion(latestVersion, req.params.platform, { isUpdate: true }),
         })
 
         return
@@ -51,8 +56,18 @@ app.get('/update/:platform/:version', (req, res) => {
       res.status(204)
       res.end()
     })
-    .catch(_ => {
-      res.status(500)
-      res.end()
+    .catch(err => {
+      // eslint-disable-next-line no-console
+      console.error(err)
+
+      // Intentinally return an empty body on error
+      res.body('')
     })
 })
+
+if (typeof describe === 'undefined') {
+  app.listen(PORT, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Listening on port ${PORT}`)
+  })
+}
