@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 set -e
 
-#./script/test
+IMAGE_NAME="squirrel-server-s3"
+IMAGE_NAME_BASE="${IMAGE_NAME}--base"
+IMAGE_NAME_TEST="${IMAGE_NAME}--test"
 
-docker build --tag squirrel-server-s3 --file Dockerfile.build .
-docker build --tag squirrel-server-s3-test --file Dockerfile.test .
+docker build --tag $IMAGE_NAME_BASE --file Dockerfile.base .
+docker build --tag $IMAGE_NAME_TEST --file Dockerfile.test .
 
-docker run --rm --volume "$PWD":/app squirrel-server-s3-test ./script/lint
-docker run --rm --volume "$PWD":/app squirrel-server-s3-test ./script/compile
-docker run --rm --volume "$PWD":/app squirrel-server-s3-test ./script/test
+docker run --rm --volume "$PWD":/app $IMAGE_NAME_TEST ./script/lint
+docker run --rm --volume "$PWD":/app $IMAGE_NAME_TEST ./script/compile
+docker run --rm --volume "$PWD":/app $IMAGE_NAME_TEST ./script/test
+
+docker build --tag $IMAGE_NAME --file Dockerfile.production .
