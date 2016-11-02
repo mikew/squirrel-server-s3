@@ -1,9 +1,5 @@
-import AWS from 'aws-sdk'
 import semver from 'semver'
-
-// const S3_ENDPOINT = process.env.S3_ENDPOINT || 's3.amazonaws.com'
-
-const s3Instance = new AWS.S3()
+import { s3Instance } from './aws'
 
 export default function getVersions () {
   return new Promise((resolve, reject) => {
