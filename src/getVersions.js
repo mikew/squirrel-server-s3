@@ -5,6 +5,7 @@ export default function getVersions () {
   return new Promise((resolve, reject) => {
     const bucketParams = {
       Bucket: process.env.BUCKET,
+      Delimiter: '/',
       MaxKeys: 10000,
     }
 
