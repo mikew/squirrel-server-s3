@@ -25,8 +25,9 @@ function transformLine (line) {
   ].join(' ')
 }
 
-export default function transformReleasesFile (contents) {
+export default function transformReleasesFile (contents = '') {
   return contents
+    .trim()
     .split(/\r?\n/)
     .map(transformLine)
     .join('\n')
