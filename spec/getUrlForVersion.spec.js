@@ -2,41 +2,51 @@ import assert from 'assert'
 import getUrlForVersion from '../src/getUrlForVersion'
 import config from '../src/config'
 
-describe('getUrlForVersion', () => {
+function getFilenameFromURL (url) {
+  const parts = url.split('/')
+  return global.decodeURIComponent(parts[parts.length - 1])
+}
+
+describe.only('getUrlForVersion', () => {
   beforeEach(() => {
     config.BUCKET = 'example-app'
     config.APP_NAME = 'Example App'
     config.S3_ENDPOINT = 's3-accelerated.amazonaws.com'
   })
 
-  it('works', () => {
-    assert.strictEqual(
-      `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-v1.0.0-darwin_x64.zip`,
-      getUrlForVersion('1.0.0', 'darwin_x64')
-    )
+  describe('isInstaller', () => {
+    it('works for all platforms', () => {
+      const platformsAndFilenames = {
+        darwin_x64: 'Example App-1.0.0.dmg',
+        win32_x64: 'Example App Setup 1.0.0.exe',
+        linux_x86: 'Example App-1.0.0-linux_x86.zip',
+      }
 
-    assert.strictEqual(
-      `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-v1.0.0-linux_x86.zip`,
-      getUrlForVersion('1.0.0', 'linux_x86')
-    )
+      Object.keys(platformsAndFilenames).forEach(platform => {
+        const expectedFilename = platformsAndFilenames[platform]
+        assert.strictEqual(
+          expectedFilename,
+          getFilenameFromURL(getUrlForVersion('1.0.0', platform, { isInstaller: true }))
+        )
+      })
+    })
   })
 
-  it('takes a `isInstaller` prop', () => {
-    assert.strictEqual(
-      `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-v1.0.0-darwin_x64.dmg`,
-      getUrlForVersion('1.0.0', 'darwin_x64', { isInstaller: true })
-    )
+  describe('isUpdate', () => {
+    it('works for all platforms', () => {
+      const platformsAndFilenames = {
+        darwin_x64: 'Example App-1.0.0-mac.zip',
+        win32_x64: 'example-app-1.0.0-full.nupkg',
+        linux_x86: 'Example App-1.0.0-linux_x86.zip',
+      }
 
-    assert.strictEqual(
-      `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App%20Setup-v1.0.0-win32_x64.exe`,
-      getUrlForVersion('1.0.0', 'win32_x64', { isInstaller: true })
-    )
-  })
-
-  it('takes a `isUpdate` prop', () => {
-    assert.strictEqual(
-      `https://example-app.s3-accelerated.amazonaws.com/1.0.0/example-app-v1.0.0-win32_x86-full.nupkg`,
-      getUrlForVersion('1.0.0', 'win32_x86', { isUpdate: true })
-    )
+      Object.keys(platformsAndFilenames).forEach(platform => {
+        const expectedFilename = platformsAndFilenames[platform]
+        assert.strictEqual(
+          expectedFilename,
+          getFilenameFromURL(getUrlForVersion('1.0.0', platform, { isUpdate: true }))
+        )
+      })
+    })
   })
 })
