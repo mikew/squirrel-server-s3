@@ -22,7 +22,7 @@ describe('/download', () => {
         .expect(r => {
           assert.strictEqual(
             r.header.location,
-            `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-v1.0.0-darwin_x64.dmg`
+            `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-1.0.0.dmg`
           )
         })
         .end(done)
@@ -36,7 +36,7 @@ describe('/download', () => {
         .expect(r => {
           assert.strictEqual(
             r.header.location,
-            `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-v1.0.0-darwin_x64.dmg`
+            `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-1.0.0.dmg`
           )
         })
         .end(done)
@@ -72,7 +72,7 @@ describe('/update', () => {
         .expect(200)
         .expect(r => {
           assert.deepStrictEqual(r.body, {
-            url: 'https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-v1.0.0-darwin_x64.zip',
+            url: 'https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-1.0.0-mac.zip',
           })
         })
         .end(done)
@@ -97,7 +97,7 @@ describe('/update', () => {
         .expect(r => {
           assert.strictEqual(
             r.header.location,
-            'https://example-app.s3-accelerated.amazonaws.com/0.9.0/example-app-v0.9.0-win32_x64-full.nupkg'
+            'https://example-app.s3-accelerated.amazonaws.com/0.9.0/example-app-0.9.0-full.nupkg'
           )
         })
         .end(done)
@@ -112,7 +112,7 @@ describe('/*.nupkg', () => {
       .expect(r => {
         assert.strictEqual(
           r.header.location,
-          'https://example-app.s3-accelerated.amazonaws.com/0.9.0/example-app-v0.9.0-win32_x64-full.nupkg'
+          'https://example-app.s3-accelerated.amazonaws.com/0.9.0/example-app-0.9.0-full.nupkg'
         )
       })
       .end(done)

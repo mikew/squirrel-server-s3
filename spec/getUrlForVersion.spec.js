@@ -7,7 +7,7 @@ function getFilenameFromURL (url) {
   return global.decodeURIComponent(parts[parts.length - 1])
 }
 
-describe.only('getUrlForVersion', () => {
+describe('getUrlForVersion', () => {
   beforeEach(() => {
     config.BUCKET = 'example-app'
     config.APP_NAME = 'Example App'
