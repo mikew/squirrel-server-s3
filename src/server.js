@@ -1,6 +1,7 @@
 import express from 'express'
 import morgan from 'morgan'
 import semver from 'semver'
+import semverRegex from 'semver-regex'
 
 import getUrlForVersion from './getUrlForVersion'
 import getReleasesFile from './getReleasesFile'
@@ -63,6 +64,32 @@ app.get('/update/:platform/:version', (req, res) => {
       // Intentinally return an empty body on error
       res.body('')
     })
+})
+
+function handleWindowsUpdate (t, req, res) {
+  const nupkg = `${t}.nupkg`
+    .replace('-full.nupkg', '')
+    .replace('-delta.nupkg', '')
+  const matches = nupkg.match(semverRegex())
+  const version = matches && matches[0]
+
+  if (!version) {
+    handleError(res)()
+
+    return
+  }
+
+  res.redirect(getUrlForVersion(version, req.params.platform, { isUpdate: true }))
+}
+
+app.get('/update/:platform/:version/*.nupkg', (req, res) => {
+  handleWindowsUpdate(req.params[0], req, res)
+})
+
+app.get('/*.nupkg', (req, res) => {
+  // TODO Better way of determining platform here
+  req.params.platform = 'win32_x64'
+  handleWindowsUpdate(req.params[0], req, res)
 })
 
 if (typeof describe === 'undefined') {

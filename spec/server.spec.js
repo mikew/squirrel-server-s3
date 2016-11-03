@@ -89,6 +89,34 @@ describe('/update', () => {
         .end(done)
     })
   })
+
+  describe('/update/:platform/:version/*.nupkg', () => {
+    it('forwards to the proper file', done => {
+      request(app).get('/update/win32_x64/0.0.1/dronefuse-client-0.9.0-full.nupkg')
+        .expect(302)
+        .expect(r => {
+          assert.strictEqual(
+            r.header.location,
+            'https://example-app.s3-accelerated.amazonaws.com/0.9.0/example-app-v0.9.0-win32_x64-full.nupkg'
+          )
+        })
+        .end(done)
+    })
+  })
+})
+
+describe('/*.nupkg', () => {
+  it('forwards to the proper file', done => {
+    request(app).get('/update/win32_x64/0.0.1/dronefuse-client-0.9.0-full.nupkg')
+      .expect(302)
+      .expect(r => {
+        assert.strictEqual(
+          r.header.location,
+          'https://example-app.s3-accelerated.amazonaws.com/0.9.0/example-app-v0.9.0-win32_x64-full.nupkg'
+        )
+      })
+      .end(done)
+  })
 })
 
 describe('/RELEASES', () => {
