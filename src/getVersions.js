@@ -8,7 +8,7 @@ export default function getVersions () {
       MaxKeys: 10000,
     }
 
-    s3Instance.listObjects(bucketParams, (err, data) => {
+    s3Instance.listObjectsV2(bucketParams, (err, data) => {
       if (err) {
         reject(err)
 
