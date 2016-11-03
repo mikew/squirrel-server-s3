@@ -17,6 +17,7 @@ function transformLine (line) {
 
   const version = matches[0]
     .replace('-full.nupkg', '')
+    .replace('-delta.nupkg', '')
 
   return [
     parts[0],
