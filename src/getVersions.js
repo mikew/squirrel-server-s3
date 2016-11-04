@@ -18,8 +18,8 @@ export default function getVersions () {
 
       const versions = []
 
-      data.Contents.forEach(obj => {
-        const version = obj.Key.split('/')[0]
+      data.CommonPrefixes.forEach(obj => {
+        const version = obj.Prefix.split('/')[0]
 
         if (!semver.valid(version)) {
           return
