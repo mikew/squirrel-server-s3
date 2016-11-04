@@ -23,8 +23,7 @@ function handleError (res) {
 }
 
 app.get('/', (req, res) => {
-  //getVersions()
-  Promise.resolve(['0.9.0', '0.5.0'])
+  getVersions()
     .then(versions => {
       res.send(renderVersionsPage(versions))
     })
