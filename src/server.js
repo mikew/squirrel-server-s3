@@ -6,6 +6,7 @@ import semverRegex from 'semver-regex'
 import getUrlForVersion from './getUrlForVersion'
 import getReleasesFile from './getReleasesFile'
 import getVersions from './getVersions.js'
+import renderVersionsPage from './renderVersionsPage'
 
 export const app = express()
 const PORT = process.env.PORT || 3000
@@ -21,6 +22,15 @@ function handleError (res) {
   }
 }
 
+app.get('/', (req, res) => {
+  //getVersions()
+  Promise.resolve(['0.9.0', '0.5.0'])
+    .then(versions => {
+      res.send(renderVersionsPage(versions))
+    })
+    .catch(handleError(res))
+})
+
 app.get('/download/:platform/:version', (req, res) => {
   res.redirect(getUrlForVersion(req.params.version, req.params.platform, { isInstaller: true }))
 })
@@ -34,16 +44,38 @@ app.get('/download/:platform', (req, res) => {
 })
 
 app.get('/RELEASES', (req, res) => {
-  getReleasesFile().then(x => res.send(x))
+  getReleasesFile()
+    .then(x => res.send(x))
+    .catch(err => {
+      // eslint-disable-next-line no-console
+      console.error(err)
+
+      // Intentinally return an empty body on error
+      res.body('')
+    })
 })
 
 app.get('/update/:platform/:version/RELEASES', (req, res) => {
-  getReleasesFile().then(x => res.send(x))
+  getReleasesFile()
+    .then(x => res.send(x))
+    .catch(err => {
+      // eslint-disable-next-line no-console
+      console.error(err)
+
+      // Intentinally return an empty body on error
+      res.body('')
+    })
 })
 
 app.get('/update/:platform/:version', (req, res) => {
   getVersions()
     .then(versions => {
+      if (!semver.valid(req.params.version)) {
+        handleError(res)()
+
+        return
+      }
+
       const latestVersion = versions[0]
 
       if (semver.lt(req.params.version, latestVersion)) {
