@@ -19,11 +19,11 @@ It expects your bucket to follow a certain structure:
 
 ```
 /RELEASES
-/1.0.0/My App-v1.0.0-darwin_x64.dmg
-/1.0.0/My App-v1.0.0-darwin_x64.zip
-/1.0.0/My App Setup-v1.0.0-win32_x64.exe
-/1.0.0/my-app-v1.0.0-win32_x64-full.nupkg
-/1.0.0/My App-v1.0.0-linux_x64.zip
+/1.0.0/My App-1.0.0.dmg
+/1.0.0/My App-1.0.0-mac.zip
+/1.0.0/My App Setup 1.0.0.exe
+/1.0.0/my-app-1.0.0-full.nupkg
+/1.0.0/My App-1.0.0-linux_x64.zip
 ```
 
 ### Usage in Electron
@@ -40,6 +40,10 @@ autoUpdater.checkForUpdates()
 
 ### Endpoints
 
+- `/`
+
+	List of all releases.
+
 - `/download/:platform/:version`
 
 	Download a specific version for a platform.
@@ -48,10 +52,12 @@ autoUpdater.checkForUpdates()
 	Download the most recent version for a platform.
 - `/RELEASES`
 
-	Used with `remoteReleases` option in `electron-builder`
+	Used with `remoteReleases` option in `electron-builder`.
+
+	Or combine it with a newly generated `RELEASES` file.
 - `/update/:platform/:version`
 
 	Checks for an update. Returns `204` if no update needed, otherwise an object with a `url` property
 - `/update/:platform/:version/RELEASES`
 
-	Acts the same as `/RELEASES`, Windows ends up checking this endpoint.
+	Acts the same as `/RELEASES`, supported so apps don't have to change their feed url on Windows.
