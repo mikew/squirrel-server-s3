@@ -1,12 +1,16 @@
 import config from './config'
-import getUrlForVersion from './getUrlForVersion'
 
-function renderTableRow (version) {
+function renderTableRow (version, baseurl) {
+  const urls = {
+    darwin_x64: `${baseurl}/download/darwin_x64/${version}`,
+    win32_x64: `${baseurl}/download/win32_x64/${version}`,
+  }
+
   return `
 <tr>
   <td>${version}</td>
-  <td><a href="${getUrlForVersion(version, 'darwin_x64')}">macOS</a></td>
-  <td><a href="${getUrlForVersion(version, 'win32_x64')}">Windows</a></td>
+  <td><a href="${urls.darwin_x64}">macOS</a></td>
+  <td><a href="${urls.win32_x64}">Windows</a></td>
 </tr>
 `
 }
@@ -43,7 +47,7 @@ export default function renderVersionsPage (versions = [], baseurl = '') {
       <h2>All Releases</h2>
       <table class="table table-striped table-hover">
         <tbody>
-          ${versions.map(renderTableRow).join('\n')}
+          ${versions.map(x => renderTableRow(x, baseurl)).join('')}
         </tbody>
       </table>
     </div>
