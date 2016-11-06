@@ -12,7 +12,12 @@ function renderTableRow (version) {
 }
 
 
-export default function renderVersionsPage (versions = []) {
+export default function renderVersionsPage (versions = [], baseurl = '') {
+  const urls = {
+    darwin_x64: `${baseurl}/download/darwin_x64`,
+    windows_x64: `${baseurl}/download/windows_x64`,
+  }
+
   return `
 <!DOCTYPE html>
 
@@ -24,6 +29,18 @@ export default function renderVersionsPage (versions = []) {
   <body>
     <div class="container">
       <h1>${config.APP_NAME} Releases</h1>
+      <p>
+        Use these links to download the most recent version:
+      </p>
+      <p>
+        <strong>macOS</strong><br />
+        <a href="${urls.darwin_x64}">${urls.darwin_x64}</a>
+      </p>
+      <p>
+        <strong>Windows</strong><br />
+        <a href="${urls.windows_x64}">${urls.windows_x64}</a>
+      </p>
+      <h2>All Releases</h2>
       <table class="table table-striped table-hover">
         <tbody>
           ${versions.map(renderTableRow).join('\n')}

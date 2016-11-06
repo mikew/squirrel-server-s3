@@ -24,8 +24,9 @@ function handleError (res) {
 
 app.get('/', (req, res) => {
   getVersions()
+  const baseurl = `${req.protocol}://${req.headers.host}`
     .then(versions => {
-      res.send(renderVersionsPage(versions))
+      res.send(renderVersionsPage(versions, baseurl))
     })
     .catch(handleError(res))
 })
