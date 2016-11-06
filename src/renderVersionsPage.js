@@ -15,7 +15,7 @@ function renderTableRow (version) {
 export default function renderVersionsPage (versions = [], baseurl = '') {
   const urls = {
     darwin_x64: `${baseurl}/download/darwin_x64`,
-    windows_x64: `${baseurl}/download/windows_x64`,
+    win32_x64: `${baseurl}/download/win32_x64`,
   }
 
   return `
@@ -38,7 +38,7 @@ export default function renderVersionsPage (versions = [], baseurl = '') {
       </p>
       <p>
         <strong>Windows</strong><br />
-        <a href="${urls.windows_x64}">${urls.windows_x64}</a>
+        <a href="${urls.win32_x64}">${urls.win32_x64}</a>
       </p>
       <h2>All Releases</h2>
       <table class="table table-striped table-hover">
