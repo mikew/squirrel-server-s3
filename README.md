@@ -8,6 +8,7 @@ A Squirrel update server using S3 as a storage backend.
 
 ```bash
 docker run --rm \
+  --publish 3000:3000 \
   --env AWS_ACCESS_KEY_ID=1234 \
   --env AWS_SECRET_ACCESS_KEY=5678 \
   --env BUCKET=my-app-releases \
