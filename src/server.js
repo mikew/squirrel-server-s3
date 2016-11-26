@@ -44,19 +44,12 @@ app.get('/download/:platform', (req, res) => {
     .catch(handleError(res))
 })
 
-app.get('/RELEASES', (req, res) => {
-  getReleasesFile()
-    .then(x => res.send(x))
-    .catch(err => {
-      // eslint-disable-next-line no-console
-      console.error(err)
 app.get('/changelog', (req, res) => {
   getChangelog().then(x => res.send(x))
 })
 
-      // Intentinally return an empty body on error
-      res.body('')
-    })
+app.get('/RELEASES', (req, res) => {
+  getReleasesFile().then(x => res.send(x))
 })
 
 app.get('/update/:platform/:version/RELEASES', (req, res) => {

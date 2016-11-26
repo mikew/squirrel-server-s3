@@ -7,10 +7,13 @@ export default function getReleasesFile () {
     Key: 'RELEASES',
   }
 
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     s3Instance.getObject(params, (err, data) => {
       if (err) {
-        reject(err)
+        // eslint-disable-next-line no-console
+        console.error(err)
+
+        resolve('')
 
         return
       }
