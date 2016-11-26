@@ -2,3 +2,4 @@ FROM squirrel-server-s3--base
 
 ENV NODE_ENV=development
 RUN npm install --no-progress
+COPY . /app/
