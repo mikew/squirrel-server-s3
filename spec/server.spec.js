@@ -1,5 +1,5 @@
 import assert from 'assert'
-import request from 'supertest'
+import request from 'supertest-as-promised'
 import mock from 'simple-mock'
 import { app } from '../src/server'
 
@@ -16,8 +16,8 @@ describe('/download', () => {
   })
 
   describe('/download/:platform/:version', () => {
-    it('get a specific version', done => {
-      request(app).get('/download/darwin_x64/1.0.0')
+    it('get a specific version', () => {
+      return request(app).get('/download/darwin_x64/1.0.0')
         .expect(302)
         .expect(r => {
           assert.strictEqual(
@@ -25,13 +25,12 @@ describe('/download', () => {
             `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-1.0.0.dmg`
           )
         })
-        .end(done)
     })
   })
 
   describe('/download/:platform', () => {
-    it('gets the latest version', done => {
-      request(app).get('/download/darwin_x64')
+    it('gets the latest version', () => {
+      return request(app).get('/download/darwin_x64')
         .expect(302)
         .expect(r => {
           assert.strictEqual(
@@ -39,7 +38,6 @@ describe('/download', () => {
             `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-1.0.0.dmg`
           )
         })
-        .end(done)
     })
   })
 })
@@ -61,38 +59,35 @@ describe('/update', () => {
   })
 
   describe('/update/:platform/:version', () => {
-    it('returns 204 when no update found', done => {
-      request(app).get('/update/darwin_x64/1.0.0')
+    it('returns 204 when no update found', () => {
+      return request(app).get('/update/darwin_x64/1.0.0')
         .expect(204)
-        .end(done)
     })
 
-    it('returns an object with a url prop', done => {
-      request(app).get('/update/darwin_x64/0.9.9')
+    it('returns an object with a url prop', () => {
+      return request(app).get('/update/darwin_x64/0.9.9')
         .expect(200)
         .expect(r => {
           assert.deepStrictEqual(r.body, {
             url: 'https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-1.0.0-mac.zip',
           })
         })
-        .end(done)
     })
   })
 
   describe('/update/:platform/:version/RELEASES', () => {
-    it('shows the RELEASES file', done => {
-      request(app).get('/update/darwin_x64/0.9.9/RELEASES')
+    it('shows the RELEASES file', () => {
+      return request(app).get('/update/darwin_x64/0.9.9/RELEASES')
         .expect(200)
         .expect(r => {
           assert.deepStrictEqual(r.text, 'SHA FILENAME SIZE')
         })
-        .end(done)
     })
   })
 
   describe('/update/:platform/:version/*.nupkg', () => {
-    it('forwards to the proper file', done => {
-      request(app).get('/update/win32_x64/0.0.1/dronefuse-client-0.9.0-full.nupkg')
+    it('forwards to the proper file', () => {
+      return request(app).get('/update/win32_x64/0.0.1/dronefuse-client-0.9.0-full.nupkg')
         .expect(302)
         .expect(r => {
           assert.strictEqual(
@@ -100,14 +95,13 @@ describe('/update', () => {
             'https://example-app.s3-accelerated.amazonaws.com/0.9.0/example-app-0.9.0-full.nupkg'
           )
         })
-        .end(done)
     })
   })
 })
 
 describe('/*.nupkg', () => {
-  it('forwards to the proper file', done => {
-    request(app).get('/update/win32_x64/0.0.1/dronefuse-client-0.9.0-full.nupkg')
+  it('forwards to the proper file', () => {
+    return request(app).get('/update/win32_x64/0.0.1/dronefuse-client-0.9.0-full.nupkg')
       .expect(302)
       .expect(r => {
         assert.strictEqual(
@@ -115,7 +109,6 @@ describe('/*.nupkg', () => {
           'https://example-app.s3-accelerated.amazonaws.com/0.9.0/example-app-0.9.0-full.nupkg'
         )
       })
-      .end(done)
   })
 })
 
@@ -130,12 +123,11 @@ describe('/RELEASES', () => {
     mock.restore()
   })
 
-  it('shows the RELEASES file', done => {
-    request(app).get('/RELEASES')
+  it('shows the RELEASES file', () => {
+    return request(app).get('/RELEASES')
       .expect(200)
       .expect(r => {
         assert.deepStrictEqual(r.text, 'SHA FILENAME SIZE')
       })
-      .end(done)
   })
 })

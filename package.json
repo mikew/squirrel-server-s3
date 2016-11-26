@@ -24,6 +24,6 @@
     "eslint-config-sst": "^1.0.2",
     "mocha": "^3.1.2",
     "simple-mock": "^0.7.1",
-    "supertest": "^2.0.1"
+    "supertest-as-promised": "^4.0.2"
   }
 }
