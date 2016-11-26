@@ -1,4 +1,0 @@
-FROM squirrel-server-s3--base
-
-COPY . /app/
-CMD ["node", "lib/server.js"]
