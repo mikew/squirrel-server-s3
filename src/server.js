@@ -3,6 +3,7 @@ import morgan from 'morgan'
 import semver from 'semver'
 import semverRegex from 'semver-regex'
 
+import getChangelog from './getChangelog'
 import getUrlForVersion from './getUrlForVersion'
 import getReleasesFile from './getReleasesFile'
 import getVersions from './getVersions.js'
@@ -49,6 +50,9 @@ app.get('/RELEASES', (req, res) => {
     .catch(err => {
       // eslint-disable-next-line no-console
       console.error(err)
+app.get('/changelog', (req, res) => {
+  getChangelog().then(x => res.send(x))
+})
 
       // Intentinally return an empty body on error
       res.body('')

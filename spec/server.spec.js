@@ -131,3 +131,23 @@ describe('/RELEASES', () => {
       })
   })
 })
+
+describe('/changelog', () => {
+  beforeEach(() => {
+    mock.mock(require('../src/getChangelog'), 'default').resolveWith(
+      'CHANGELOG.md contents'
+    )
+  })
+
+  afterEach(() => {
+    mock.restore()
+  })
+
+  it('shows the CHANGELOG.md file', () => {
+    return request(app).get('/changelog')
+      .expect(200)
+      .expect(r => {
+        assert.deepStrictEqual(r.text, 'CHANGELOG.md contents')
+      })
+  })
+})
