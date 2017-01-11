@@ -14,6 +14,11 @@ import { getStats } from './stats'
 export const app = express()
 const PORT = process.env.PORT || 3000
 
+process.on('unhandledRejection', (reason, promise) => {
+  // eslint-disable-next-line no-console
+  console.log('Unhandled Rejection at: Promise', promise, 'reason:', reason)
+})
+
 if (typeof describe === 'undefined') {
   app.use(morgan('combined'))
 }

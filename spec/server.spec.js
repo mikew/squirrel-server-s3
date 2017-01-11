@@ -1,5 +1,5 @@
 import assert from 'assert'
-import request from 'supertest-as-promised'
+import request from 'supertest'
 import mock from 'simple-mock'
 import { app } from '../src/server'
 
