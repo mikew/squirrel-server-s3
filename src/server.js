@@ -8,6 +8,7 @@ import getUrlForVersion from './getUrlForVersion'
 import getReleasesFile from './getReleasesFile'
 import getVersions from './getVersions.js'
 import renderVersionsPage from './renderVersionsPage'
+import trackAction from './trackAction'
 
 export const app = express()
 const PORT = process.env.PORT || 3000
@@ -33,12 +34,14 @@ app.get('/', (req, res) => {
 })
 
 app.get('/download/:platform/:version', (req, res) => {
+  trackAction(`download:${req.params.platform}`, req.params.version)
   res.redirect(getUrlForVersion(req.params.version, req.params.platform, { isInstaller: true }))
 })
 
 app.get('/download/:platform', (req, res) => {
   getVersions()
     .then(versions => {
+      trackAction(`download:${req.params.platform}`, versions[0])
       res.redirect(getUrlForVersion(versions[0], req.params.platform, { isInstaller: true }))
     })
     .catch(handleError(res))
@@ -76,6 +79,7 @@ app.get('/update/:platform/:version', (req, res) => {
       const latestVersion = versions[0]
 
       if (semver.lt(req.params.version, latestVersion)) {
+        trackAction(`update:${req.params.platform}`, latestVersion)
         res.json({
           url: getUrlForVersion(latestVersion, req.params.platform, { isUpdate: true }),
         })
@@ -108,6 +112,7 @@ function handleWindowsUpdate (t, req, res) {
     return
   }
 
+  trackAction(`update:${req.params.platform}`, version)
   res.redirect(getUrlForVersion(version, req.params.platform, { isUpdate: true }))
 }
 
