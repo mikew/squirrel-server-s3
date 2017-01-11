@@ -147,7 +147,28 @@ describe('/changelog', () => {
     return request(app).get('/changelog')
       .expect(200)
       .expect(r => {
-        assert.deepStrictEqual(r.text, 'CHANGELOG.md contents')
+        assert.strictEqual(r.text, 'CHANGELOG.md contents')
+      })
+  })
+})
+
+describe('/stats.json', () => {
+  beforeEach(() => {
+    mock.mock(require('../src/stats'), 'getStats').resolveWith(
+      '{}'
+    )
+  })
+
+  afterEach(() => {
+    mock.restore()
+  })
+
+  it('shows the stats.json file', () => {
+    return request(app).get('/stats.json')
+      .expect(200)
+      .expect(r => {
+        assert.ok(r.headers['content-type'].startsWith('application/json'), 'Content-Type starts with application/json')
+        assert.strictEqual(r.text, '{}')
       })
   })
 })

@@ -9,6 +9,7 @@ import getReleasesFile from './getReleasesFile'
 import getVersions from './getVersions.js'
 import renderVersionsPage from './renderVersionsPage'
 import trackAction from './trackAction'
+import { getStats } from './stats'
 
 export const app = express()
 const PORT = process.env.PORT || 3000
@@ -49,6 +50,13 @@ app.get('/download/:platform', (req, res) => {
 
 app.get('/changelog', (req, res) => {
   getChangelog().then(x => res.send(x))
+})
+
+app.get('/stats.json', (req, res) => {
+  getStats().then(x => {
+    res.header('Content-Type', 'application/json')
+    res.send(x)
+  })
 })
 
 app.get('/RELEASES', (req, res) => {
