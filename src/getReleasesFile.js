@@ -3,7 +3,8 @@ import { s3Instance } from './aws'
 import splitPlatformAndArch from './splitPlatformAndArch.js'
 
 export default function getReleasesFile (platformWithArch) {
-  const [ _, arch ] = splitPlatformAndArch(platformWithArch)
+  // eslint-disable-next-line no-unused-vars
+  const [ platform, arch ] = splitPlatformAndArch(platformWithArch)
   const toAppend = arch === 'x64' ? '' : '-ia32'
   const params = {
     Bucket: config.BUCKET,
