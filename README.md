@@ -37,6 +37,7 @@ It expects your bucket to follow a certain structure:
 ```js
 import os from 'os'
 import {
+  app,
   autoUpdate,
 } from 'electron'
 
@@ -50,20 +51,24 @@ autoUpdater.checkForUpdates()
 
 	List of all releases.
 
-- `/download/:platform/:version`
-
-	Download a specific version for a platform.
 - `/download/:platform`
 
 	Download the most recent version for a platform.
+
+- `/download/:platform/:version`
+
+	Download a specific version for a platform.
+
 - `/RELEASES`
 
 	Used with `remoteReleases` option in `electron-builder`.
 
 	Or combine it with a newly generated `RELEASES` file.
+
 - `/update/:platform/:version`
 
 	Checks for an update. Returns `204` if no update needed, otherwise an object with a `url` property
+
 - `/update/:platform/:version/RELEASES`
 
 	Acts the same as `/RELEASES`, supported so apps don't have to change their feed url on Windows.
