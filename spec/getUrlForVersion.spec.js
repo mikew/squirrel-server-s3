@@ -2,11 +2,6 @@ import assert from 'assert'
 import getUrlForVersion from '../src/getUrlForVersion'
 import config from '../src/config'
 
-function getFilenameFromURL (url) {
-  const parts = url.split('/')
-  return global.decodeURIComponent(parts[parts.length - 1])
-}
-
 describe('getUrlForVersion', () => {
   beforeEach(() => {
     config.BUCKET = 'example-app'
@@ -17,16 +12,20 @@ describe('getUrlForVersion', () => {
   describe('isInstaller', () => {
     it('works for all platforms', () => {
       const platformsAndFilenames = {
-        darwin_x64: 'Example App-1.0.0.dmg',
-        win32_x64: 'Example App Setup 1.0.0.exe',
-        linux_x86: 'Example App-1.0.0-linux_x86.zip',
+        darwin_x64: 'mac/Example App-1.0.0.dmg',
+        win32_x64: 'win/Example App Setup 1.0.0.exe',
+        win32_ia32: 'win-ia32/Example App Setup 1.0.0-ia32.exe',
+        linux_x64: 'linux/Example App-1.0.0.zip',
+        linux_ia32: 'linux-ia32/Example App-1.0.0-ia32.zip',
       }
 
       Object.keys(platformsAndFilenames).forEach(platform => {
+        const generated = getUrlForVersion('1.0.0', platform, { isInstaller: true })
         const expectedFilename = platformsAndFilenames[platform]
-        assert.strictEqual(
-          expectedFilename,
-          getFilenameFromURL(getUrlForVersion('1.0.0', platform, { isInstaller: true }))
+
+        assert.ok(
+          global.decodeURIComponent(generated).endsWith(expectedFilename),
+          `Expected ${generated} to end with ${expectedFilename}`
         )
       })
     })
@@ -35,16 +34,20 @@ describe('getUrlForVersion', () => {
   describe('isUpdate', () => {
     it('works for all platforms', () => {
       const platformsAndFilenames = {
-        darwin_x64: 'Example App-1.0.0-mac.zip',
-        win32_x64: 'example-app-1.0.0-full.nupkg',
-        linux_x86: 'Example App-1.0.0-linux_x86.zip',
+        darwin_x64: 'mac/Example App-1.0.0-mac.zip',
+        win32_x64: 'win/example-app-1.0.0-full.nupkg',
+        win32_ia32: 'win-ia32/example-app-1.0.0-full.nupkg',
+        linux_x64: 'linux/Example App-1.0.0.zip',
+        linux_ia32: 'linux-ia32/Example App-1.0.0-ia32.zip',
       }
 
       Object.keys(platformsAndFilenames).forEach(platform => {
+        const generated = getUrlForVersion('1.0.0', platform, { isUpdate: true })
         const expectedFilename = platformsAndFilenames[platform]
-        assert.strictEqual(
-          expectedFilename,
-          getFilenameFromURL(getUrlForVersion('1.0.0', platform, { isUpdate: true }))
+
+        assert.ok(
+          global.decodeURIComponent(generated).endsWith(expectedFilename),
+          `Expected ${generated} to end with ${expectedFilename}`
         )
       })
     })

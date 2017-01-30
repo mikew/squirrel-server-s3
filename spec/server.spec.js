@@ -22,7 +22,7 @@ describe('/download', () => {
         .expect(r => {
           assert.strictEqual(
             r.header.location,
-            `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-1.0.0.dmg`
+            `https://example-app.s3-accelerated.amazonaws.com/1.0.0/mac/Example%20App-1.0.0.dmg`
           )
         })
     })
@@ -35,7 +35,7 @@ describe('/download', () => {
         .expect(r => {
           assert.strictEqual(
             r.header.location,
-            `https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-1.0.0.dmg`
+            `https://example-app.s3-accelerated.amazonaws.com/1.0.0/mac/Example%20App-1.0.0.dmg`
           )
         })
     })
@@ -69,7 +69,7 @@ describe('/update', () => {
         .expect(200)
         .expect(r => {
           assert.deepStrictEqual(r.body, {
-            url: 'https://example-app.s3-accelerated.amazonaws.com/1.0.0/Example%20App-1.0.0-mac.zip',
+            url: 'https://example-app.s3-accelerated.amazonaws.com/1.0.0/mac/Example%20App-1.0.0-mac.zip',
           })
         })
     })
@@ -86,13 +86,24 @@ describe('/update', () => {
   })
 
   describe('/update/:platform/:version/*.nupkg', () => {
-    it('forwards to the proper file', () => {
+    it('x64 forwards to the proper file', () => {
       return request(app).get('/update/win32_x64/0.0.1/dronefuse-client-0.9.0-full.nupkg')
         .expect(302)
         .expect(r => {
           assert.strictEqual(
             r.header.location,
-            'https://example-app.s3-accelerated.amazonaws.com/0.9.0/example-app-0.9.0-full.nupkg'
+            'https://example-app.s3-accelerated.amazonaws.com/0.9.0/win/example-app-0.9.0-full.nupkg'
+          )
+        })
+    })
+
+    it('ia32 forwards to the proper file', () => {
+      return request(app).get('/update/win32_ia32/0.0.1/dronefuse-client-0.9.0-full.nupkg')
+        .expect(302)
+        .expect(r => {
+          assert.strictEqual(
+            r.header.location,
+            'https://example-app.s3-accelerated.amazonaws.com/0.9.0/win-ia32/example-app-0.9.0-full.nupkg'
           )
         })
     })
@@ -106,7 +117,7 @@ describe('/*.nupkg', () => {
       .expect(r => {
         assert.strictEqual(
           r.header.location,
-          'https://example-app.s3-accelerated.amazonaws.com/0.9.0/example-app-0.9.0-full.nupkg'
+          'https://example-app.s3-accelerated.amazonaws.com/0.9.0/win/example-app-0.9.0-full.nupkg'
         )
       })
   })

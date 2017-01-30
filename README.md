@@ -20,11 +20,16 @@ It expects your bucket to follow a certain structure:
 
 ```
 /RELEASES
-/1.0.0/My App-1.0.0.dmg
-/1.0.0/My App-1.0.0-mac.zip
-/1.0.0/My App Setup 1.0.0.exe
-/1.0.0/my-app-1.0.0-full.nupkg
-/1.0.0/My App-1.0.0-linux_x64.zip
+/RELEASES-ia32
+/CHANGELOG.md
+/1.0.0/mac/My App-1.0.0.dmg
+/1.0.0/mac/My App-1.0.0-mac.zip
+/1.0.0/win/My App Setup 1.0.0.exe
+/1.0.0/win/my-app-1.0.0-full.nupkg
+/1.0.0/win-ia32/My App Setup 1.0.0-ia32.exe
+/1.0.0/win-ia32/my-app-1.0.0-full.nupkg
+/1.0.0/linux/My App-1.0.0.zip
+/1.0.0/linux-ia32/My App-1.0.0-ia32.zip
 ```
 
 ### Usage in Electron

@@ -15,6 +15,10 @@ export const app = express()
 const PORT = process.env.PORT || 3000
 
 process.on('unhandledRejection', (reason, promise) => {
+  if (typeof describe !== 'undefined') {
+    return
+  }
+
   // eslint-disable-next-line no-console
   console.log('Unhandled Rejection at: Promise', promise, 'reason:', reason)
 })
@@ -65,19 +69,20 @@ app.get('/stats.json', (req, res) => {
 })
 
 app.get('/RELEASES', (req, res) => {
-  getReleasesFile().then(x => res.send(x))
+  // TODO Better way of determining platform here
+  req.params.platform = 'win32_x64'
+  getReleasesFile(req.params.platform).then(x => res.send(x))
+})
+
+app.get('/RELEASES-ia32', (req, res) => {
+  // TODO Better way of determining platform here
+  req.params.platform = 'win32_ia32'
+  getReleasesFile(req.params.platform).then(x => res.send(x))
 })
 
 app.get('/update/:platform/:version/RELEASES', (req, res) => {
-  getReleasesFile()
+  getReleasesFile(req.params.platform)
     .then(x => res.send(x))
-    .catch(err => {
-      // eslint-disable-next-line no-console
-      console.error(err)
-
-      // Intentinally return an empty body on error
-      res.body('')
-    })
 })
 
 app.get('/update/:platform/:version', (req, res) => {
